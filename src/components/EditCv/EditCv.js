@@ -115,7 +115,7 @@ export class EditCv extends Component {
           }
           return [
             <ListingInfo
-              key={i}
+              key={job.id}
               title="Company"
               location="Location"
               date="Date"
@@ -150,7 +150,7 @@ export class EditCv extends Component {
           }
           return [
             <ListingInfo
-              key={i}
+              key={ed.id}
               title="University"
               location="Location"
               date="Date"
