@@ -19,7 +19,7 @@ h2 {
 .line {
 height: 1px;
 background-color: hsl(var(--hue) var(--sat) var(--l));
-margin: 2rem 0;
+margin: 1rem 0;
 }
 
 .renderedCV {

@@ -7,6 +7,13 @@ import Listings from "./Listings/Listings";
 import "./CV.css";
 
 export class RenderedCV extends Component {
+  renderListings = (sectionName, listings) => {
+    if (listings.length <= 0) return null;
+    return (
+      <Listings sectionName={sectionName} listings={listings} />
+    );
+  };
+
   render() {
     return (
       <div className="renderedCV">
@@ -27,15 +34,14 @@ export class RenderedCV extends Component {
             website={this.props.website}
           />
           <div className="line"></div>
-          <Listings
-            sectionName="WORK EXPERIENCE"
-            listings={this.props.workEx}
-          />
-          <div className="line inverted"></div>
-          <Listings
-            sectionName="EDUCATION"
-            listings={this.props.education}
-          />
+          {this.renderListings(
+            "WORK EXPERIENCE",
+            this.props.workEx
+          )}
+
+          <div className="line"></div>
+
+          {this.renderListings("EDUCATION", this.props.education)}
         </div>
       </div>
     );

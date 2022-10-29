@@ -46,6 +46,7 @@ export class EditCv extends Component {
               link={link.link}
               editLinkName={this.props.editLinkName}
               editLinkUrl={this.props.editLinkUrl}
+              deleteLink={this.props.deleteLink}
             />
           );
         })}

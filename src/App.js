@@ -180,6 +180,17 @@ class App extends Component {
     });
   };
 
+  deleteLink = (id) => {
+    const links = this.state.links.filter((link) => {
+      if (link.id === id) return false;
+      else return true;
+    });
+
+    this.setState({
+      links: links,
+    });
+  };
+
   addNewListing = (category) => {
     console.log("called");
     if (!(category in this.state))
@@ -224,6 +235,7 @@ class App extends Component {
           changeListing={this.changeListing}
           addNewListing={this.addNewListing}
           deleteListing={this.deleteListing}
+          deleteLink={this.deleteLink}
         />
         <RenderedCV
           aboutMe={this.state.aboutMe}

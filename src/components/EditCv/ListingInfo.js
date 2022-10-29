@@ -14,7 +14,7 @@ export class ListingInfo extends Component {
             this.props.category
           )
         }
-        className="deleteListingBtn"
+        className="span2 deleteListingBtn"
       >
         <span className="mdi mdi-delete mdi-18px"></span>
       </button>,

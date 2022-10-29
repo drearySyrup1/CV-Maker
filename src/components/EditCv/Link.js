@@ -47,6 +47,12 @@ export class Input extends Component {
           type="text"
           value={this.state.url}
         />
+        <button
+          onClick={() => this.props.deleteLink(this.props.id)}
+          className="deleteListingBtn"
+        >
+          <span className="mdi mdi-delete mdi-18px"></span>
+        </button>
       </div>,
     ];
   }
