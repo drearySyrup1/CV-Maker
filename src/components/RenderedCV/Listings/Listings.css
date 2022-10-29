@@ -1,0 +1,56 @@
+
+.WorkEx {
+  color: var(--accent-color)
+}
+
+.WorkEx h2 {
+  font-size: 1.4rem;
+}
+
+.work-list {
+  --gapsize: 20px;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: var(--gapsize)
+}
+
+.job-info {
+  --padleft: .9rem;
+  padding-left: var(--padleft);
+  position: relative; 
+}
+
+.connector {
+  position: absolute;
+  width: 1px;
+  margin-left: calc(var(--padleft) * -1);
+  height: calc(100% + var(--gapsize));
+  background-color: var(--accent-color);
+}
+
+.connector::after {
+  --radius: 10px;
+  content: '';
+  width: var(--radius);
+  height: var(--radius);
+  border-radius: 50%;
+  background-color: var(--accent-color);
+  position: absolute;
+  top: 0;
+  left: calc(var(--radius) / 2 * -1)
+}
+
+.work-list > div:last-child .connector {
+  height: 100%;
+}
+
+.job-title,
+.role-name {
+  font-weight: bold;
+  font-size: .9rem;
+}
+
+.job p,
+.job-info p {
+  margin-bottom: 5px;
+}

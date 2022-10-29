@@ -1,0 +1,66 @@
+:root {
+  /* --accent-color: hsl(280 2% 25%); */
+  --hue: 280;
+  --sat: 2%;
+  --l: 25%;
+  --accent-color: hsl(var(--hue) var(--sat) var(--l));
+  --primary-color: hsl(0 0% 100%);
+}
+
+.inverted {
+  --l: 65%;
+}
+
+h2 {
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+}
+
+.line {
+height: 1px;
+background-color: hsl(var(--hue) var(--sat) var(--l));
+margin: 2rem 0;
+}
+
+.renderedCV {
+  margin: 100px;
+  max-width: 1000px;
+  display: grid;
+  grid-template-columns: minmax(auto, 250px) 1fr;
+  height: 100%;
+  box-shadow: 0 0 20px hsl(0 0% 0% / .3);
+}
+
+.photo {
+  width: 150px;
+  border-radius: 50%;
+  justify-self: center;
+  margin-bottom: 2rem;
+}
+
+.main-left,
+.main-right {
+  padding: 2rem;
+  height: 100%;
+}
+
+.main-left {
+  background-color: var(--accent-color);
+  color: var(--primary-color);
+  display: grid;
+  justify-content: center;
+  grid-auto-rows: min-content;
+}
+
+.main-right {
+  background-color: var(--primary-color);
+}
+
+.left p {
+  font-size: .85rem;
+}
+
+.links {
+  display: grid;
+  gap: 20px;
+}

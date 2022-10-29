@@ -1,0 +1,62 @@
+.editCV {
+  margin: 100px;
+  max-width: 1000px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  box-shadow: 0 0 20px hsl(0 0% 0% / .3);
+  padding: 1rem;
+  align-items: center;
+  row-gap: 10px;
+  column-gap: 10px;
+  color: var(--primary-color)
+}
+
+.editCV input {
+  padding: .5rem;
+  border-radius: 5px;
+  outline: 0;
+  border: 0;
+}
+
+.span2 {
+  grid-column: span 2;
+}
+
+.btn {
+  padding: .5rem;
+  background-color: #fff;
+  border: 1px solid white;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.btn:hover{
+  background-color: rgb(202, 202, 202);
+  color: black;
+}
+
+.linkGrid {
+display: grid;
+grid-template-columns: 1fr 3fr;
+column-gap: 10px;
+}
+
+.deleteListingBtn {
+--size: 30px;
+grid-column: span 2;
+width: var(--size);
+height: var(--size);
+border-radius: 50%;
+border: 0;
+color: hsl(0, 60%, 60%);
+justify-self: end;
+cursor: pointer;
+background-color: hsl(0, 10%, 30%);
+transition: background-color 200ms;
+}
+
+.deleteListingBtn:hover {
+  background-color: hsl(0, 10%, 80%);
+  color: hsl(0, 60%, 50%);
+
+}

@@ -1,0 +1,18 @@
+.heading-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  gap: 30px;
+  color: var(--accent-color);
+
+}
+
+.heading-wrapper h1 {
+  font-weight: bold;
+  font-size: 1.8rem;
+}
+
+.heading-info-row {
+  display: flex;
+  gap: 10px;
+}
