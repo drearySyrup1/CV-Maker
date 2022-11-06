@@ -16,7 +16,7 @@ export class RenderedCV extends Component {
 
   render() {
     return (
-      <div className="renderedCV">
+      <div id="CV" className="renderedCV">
         <div className="main-left">
           <Photo />
           <AboutMe value={this.props.aboutMe} />
