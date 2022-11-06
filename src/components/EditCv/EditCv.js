@@ -1,182 +1,155 @@
-import React, { Component } from "react";
+import React from "react";
 import Link from "./Link";
 import Input from "./Input";
 import "./editcv.css";
 import uniqid from "uniqid";
 import ListingInfo from "./ListingInfo";
-import { computeHeadingLevel } from "@testing-library/react";
 
-export class EditCv extends Component {
-  state = {
-    aboutMe: this.props.aboutMe,
-  };
+export function EditCv(props) {
+  return (
+    <div className="editCV">
+      <Input
+        name="aboutMe"
+        label="About Me"
+        value={props.aboutMe}
+        changeMainState={props.changeMainState}
+      />
 
-  handleAboutMeChange(e) {
-    this.setState(
-      {
-        aboutMe: e.target.value,
-      },
-      () => {
-        this.props.changeAboutMe(this.state.aboutMe);
-      }
-    );
-  }
+      {/* genreate existing links */}
+      {props.links.map((link, i) => {
+        const index = i + 1;
+        return (
+          <Link
+            key={link.id}
+            id={link.id}
+            label={`Link ${index}`}
+            name={link.name}
+            link={link.link}
+            editLinkName={props.editLinkName}
+            editLinkUrl={props.editLinkUrl}
+            deleteLink={props.deleteLink}
+          />
+        );
+      })}
 
-  render() {
-    console.log("editCV props");
-    console.log(this.props.workEx);
-    return (
-      <div className="editCV">
-        <Input
-          name="aboutMe"
-          label="About Me"
-          value={this.state.aboutMe}
-          changeMainState={this.props.changeMainState}
-        />
+      <button onClick={props.addNewLink} className="btn span2">
+        Add Link
+      </button>
 
-        {/* genreate existing links */}
-        {this.props.links.map((link, i) => {
-          const index = i + 1;
-          return (
-            <Link
-              key={link.id}
-              id={link.id}
-              label={`Link ${index}`}
-              name={link.name}
-              link={link.link}
-              editLinkName={this.props.editLinkName}
-              editLinkUrl={this.props.editLinkUrl}
-              deleteLink={this.props.deleteLink}
-            />
-          );
-        })}
+      <div className="line span2"></div>
 
-        <button
-          onClick={this.props.addNewLink}
-          className="btn span2"
-        >
-          Add Link
-        </button>
+      <Input
+        name="firstName"
+        label="Name"
+        value={props.firstName}
+        changeMainState={props.changeMainState}
+      />
+      <Input
+        name="lastName"
+        label="Surname"
+        value={props.lastName}
+        changeMainState={props.changeMainState}
+      />
+      <Input
+        name="occupation"
+        label="Qualification"
+        value={props.occupation}
+        changeMainState={props.changeMainState}
+      />
+      <Input
+        name="address"
+        label="Address"
+        value={props.address}
+        changeMainState={props.changeMainState}
+      />
+      <Input
+        name="phoneNumber"
+        label="Phone number"
+        value={props.phoneNumber}
+        changeMainState={props.changeMainState}
+      />
+      <Input
+        name="email"
+        label="Email"
+        value={props.email}
+        changeMainState={props.changeMainState}
+      />
+      <Input
+        name="website"
+        label="Website"
+        value={props.website}
+        changeMainState={props.changeMainState}
+      />
 
-        <div className="line span2"></div>
+      <div className="line span2"></div>
 
-        <Input
-          name="firstName"
-          label="Name"
-          value={this.props.firstName}
-          changeMainState={this.props.changeMainState}
-        />
-        <Input
-          name="lastName"
-          label="Surname"
-          value={this.props.lastName}
-          changeMainState={this.props.changeMainState}
-        />
-        <Input
-          name="occupation"
-          label="Qualification"
-          value={this.props.occupation}
-          changeMainState={this.props.changeMainState}
-        />
-        <Input
-          name="address"
-          label="Address"
-          value={this.props.address}
-          changeMainState={this.props.changeMainState}
-        />
-        <Input
-          name="phoneNumber"
-          label="Phone number"
-          value={this.props.phoneNumber}
-          changeMainState={this.props.changeMainState}
-        />
-        <Input
-          name="email"
-          label="Email"
-          value={this.props.email}
-          changeMainState={this.props.changeMainState}
-        />
-        <Input
-          name="website"
-          label="Website"
-          value={this.props.website}
-          changeMainState={this.props.changeMainState}
-        />
+      {props.workEx.map((job, i) => {
+        let line;
+        if (i !== props.workEx.length - 1) {
+          line = <div key="workline" className="line span2"></div>;
+        } else {
+          line = null;
+        }
+        return [
+          <ListingInfo
+            key={job.id}
+            title="Company"
+            location="Location"
+            date="Date"
+            descTitle="Role"
+            desc="Description"
+            values={job}
+            changeListing={props.changeListing}
+            category="workEx"
+            deleteListing={props.deleteListing}
+          />,
+          line,
+        ];
+      })}
 
-        <div className="line span2"></div>
+      <button
+        onClick={() => props.addNewListing("workEx")}
+        className="btn span2"
+      >
+        Add Work Experience
+      </button>
 
-        {this.props.workEx.map((job, i) => {
-          let line;
-          if (i !== this.props.workEx.length - 1) {
-            line = (
-              <div key="workline" className="line span2"></div>
-            );
-          } else {
-            line = null;
-          }
-          return [
-            <ListingInfo
-              key={job.id}
-              title="Company"
-              location="Location"
-              date="Date"
-              descTitle="Role"
-              desc="Description"
-              values={job}
-              changeListing={this.props.changeListing}
-              category="workEx"
-              deleteListing={this.props.deleteListing}
-            />,
-            line,
-          ];
-        })}
+      <div className="line span2"></div>
 
-        <button
-          onClick={() => this.props.addNewListing("workEx")}
-          className="btn span2"
-        >
-          Add Work Experience
-        </button>
+      {props.education.map((ed, i) => {
+        let line;
+        if (i !== props.education.length - 1) {
+          line = <div key="workline" className="line span2"></div>;
+        } else {
+          line = null;
+        }
+        return [
+          <ListingInfo
+            key={ed.id}
+            title="University"
+            location="Location"
+            date="Date"
+            descTitle="Study Name"
+            desc="Description"
+            values={ed}
+            changeListing={props.changeListing}
+            category="education"
+            deleteListing={props.deleteListing}
+          />,
+          line,
+        ];
+      })}
 
-        <div className="line span2"></div>
+      <button
+        onClick={() => props.addNewListing("education")}
+        className="btn span2"
+      >
+        Add Education
+      </button>
 
-        {this.props.education.map((ed, i) => {
-          let line;
-          if (i !== this.props.education.length - 1) {
-            line = (
-              <div key="workline" className="line span2"></div>
-            );
-          } else {
-            line = null;
-          }
-          return [
-            <ListingInfo
-              key={ed.id}
-              title="University"
-              location="Location"
-              date="Date"
-              descTitle="Study Name"
-              desc="Description"
-              values={ed}
-              changeListing={this.props.changeListing}
-              category="education"
-              deleteListing={this.props.deleteListing}
-            />,
-            line,
-          ];
-        })}
-
-        <button
-          onClick={() => this.props.addNewListing("education")}
-          className="btn span2"
-        >
-          Add Education
-        </button>
-
-        <div key="workline" className="line span2"></div>
-      </div>
-    );
-  }
+      <div key="workline" className="line span2"></div>
+    </div>
+  );
 }
 
 export default EditCv;

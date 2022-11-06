@@ -1,47 +1,37 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import uniqid from "uniqid";
 
-export class Input extends Component {
-  state = {
-    value: this.props.value,
+export function Input(props) {
+  const [value, setValue] = useState(props.value);
+
+  const handleChange = (e) => {
+    setValue(e.target.value);
   };
 
-  handleChange = (e) => {
-    this.setState(
-      {
-        value: e.target.value,
-      },
-      () => {
-        if (this.props.mainState === false) {
-          this.props.changeMainState(
-            this.props.category,
-            this.props.name,
-            this.state.value,
-            this.props.id
-          );
-        } else {
-          this.props.changeMainState(
-            this.props.name,
-            this.state.value
-          );
-        }
-      }
-    );
-  };
+  useEffect(() => {
+    if (props.mainState === false) {
+      props.changeMainState(
+        props.category,
+        props.name,
+        value,
+        props.id
+      );
+    } else {
+      props.changeMainState(props.name, value);
+    }
+  }, [value]);
 
-  render() {
-    return [
-      <label key="1" htmlFor="">
-        {this.props.label}
-      </label>,
-      <input
-        key="2"
-        onChange={this.handleChange}
-        type="text"
-        value={this.state.value}
-      />,
-    ];
-  }
+  return [
+    <label key="1" htmlFor="">
+      {props.label}
+    </label>,
+    <input
+      key="2"
+      onChange={handleChange}
+      type="text"
+      value={value}
+    />,
+  ];
 }
 
 export default Input;

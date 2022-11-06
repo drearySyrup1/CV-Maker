@@ -1,14 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
 
-export class AboutMe extends Component {
-  render() {
-    return (
-      <div>
-        <h2>ABOUT ME</h2>
-        <p>{this.props.value}</p>
-      </div>
-    );
-  }
+export function AboutMe(props) {
+  return (
+    <div>
+      <h2>ABOUT ME</h2>
+      <p>{props.value}</p>
+    </div>
+  );
 }
 
 export default AboutMe;

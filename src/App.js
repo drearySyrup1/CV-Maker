@@ -1,38 +1,119 @@
-import React, { Component } from "react";
+import React, { useState, useReducer } from "react";
 import uniqid from "uniqid";
 
 import "./App.css";
 import RenderedCV from "./components/RenderedCV/RenderedCV";
 import EditCv from "./components/EditCv/EditCv";
 
-class App extends Component {
-  state = {
-    aboutMe:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut eos nisi optio asperiores quisquam quos fugiat, quia esse consequatur inventore libero tenetur commodi voluptatum doloremque mollitia repudiandae voluptate omnis perspiciatis?",
-    links: [
-      {
-        name: "Facebook",
-        link: "facebook.com/robinson",
-        id: uniqid(),
-      },
-      {
-        name: "LinkedIn",
-        link: "linkedin.com/robinson",
-        id: uniqid(),
-      },
-      {
-        name: "Twitter",
-        link: "twitter.com/robinson",
-        id: uniqid(),
-      },
-    ],
-    firstName: "MICHELLES",
-    lastName: "ROBINSON",
-    occupation: "GRAPHIC DESIGNER",
-    address: "8 Great Fleete Way",
-    phoneNumber: "+44 7636 6236",
-    email: "test@test.com",
-    website: "test.com",
+//RECUCER CODE START -------------------------------------
+
+const ACTIONS = {
+  changeListing: "changeListing",
+  deleteListing: "deleteListing",
+  addListing: "addListing",
+};
+
+function personInfoReducer(state, action) {
+  const temp = {
+    ...state,
+    [action.payload.name]: action.payload.value,
+  };
+
+  return temp;
+}
+
+function listingsReducer(state, action) {
+  switch (action.type) {
+    case ACTIONS.changeListing:
+      return handleListingChange(state, action);
+
+    case ACTIONS.deleteListing:
+      return handleListingDelete(state, action);
+
+    case ACTIONS.addListing:
+      return handleAddListing(state, action);
+    default:
+      return state;
+  }
+}
+
+function handleListingChange(state, action) {
+  const listings = [...state[action.payload.category]].map(
+    (listing) => {
+      if (listing.id === action.payload.id) {
+        return {
+          ...listing,
+          [action.payload.field]: action.payload.newName,
+        };
+      } else {
+        return listing;
+      }
+    }
+  );
+
+  return { ...state, [action.payload.category]: listings };
+}
+
+function handleListingDelete(state, action) {
+  const listings = state[action.payload.category].filter((item) => {
+    if (item.id === action.payload.id) return false;
+    else return true;
+  });
+
+  return { ...state, [action.payload.category]: listings };
+}
+
+function handleAddListing(state, action) {
+  const listings = [...state[action.payload.category]];
+  listings.push({
+    listingTitle: "",
+    location: "",
+    date: "",
+    descriptionName: "",
+    description: "",
+    id: uniqid(),
+  });
+  return { ...state, [action.payload.category]: listings };
+}
+
+//RECUCER CODE END -------------------------------------
+
+function App() {
+  const [aboutMe, setAboutMe] = useState();
+  const [links, setLinks] = useState([
+    {
+      name: "Facebook",
+      link: "facebook.com/robinson",
+      id: uniqid(),
+    },
+    {
+      name: "LinkedIn",
+      link: "linkedin.com/robinson",
+      id: uniqid(),
+    },
+    {
+      name: "Twitter",
+      link: "twitter.com/robinson",
+      id: uniqid(),
+    },
+  ]);
+
+  const [personInfo, dispatchPersonInfo] = useReducer(
+    personInfoReducer,
+    {
+      aboutMe:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut eos nisi optio asperiores quisquam quos fugiat, quia esse consequatur inventore libero tenetur commodi voluptatum doloremque mollitia repudiandae voluptate omnis perspiciatis?",
+      firstName: "MICHELLES",
+      lastName: "ROBINSON",
+      occupation: "GRAPHIC DESIGNER",
+      address: "8 Great Fleete Way",
+      phoneNumber: "+44 7636 6236",
+      email: "test@test.com",
+      website: "test.com",
+    }
+  );
+
+  const [listings, dispatchListing] = useReducer(listingsReducer, {
     workEx: [
       {
         listingTitle: "GLOWPIXEL LTD",
@@ -82,32 +163,26 @@ class App extends Component {
         id: uniqid(),
       },
     ],
+  });
+
+  const changeAboutMe = (newData) => {
+    setAboutMe(newData);
   };
 
-  changeAboutMe = (newData) => {
-    this.setState({
-      aboutMe: newData,
-    });
-  };
+  const addLink = () => {
+    const localLinks = [...links];
 
-  addLink = () => {
-    console.log(this.state.links);
-    const localLinks = [...this.state.links];
-
-    console.log(localLinks);
     localLinks.push({
       name: "",
       link: "",
       id: uniqid(),
     });
 
-    this.setState({
-      links: localLinks,
-    });
+    setLinks(localLinks);
   };
 
-  changeLinkName = (newName, id) => {
-    const localLinks = [...this.state.links].map((link) => {
+  const changeLinkName = (newName, id) => {
+    const localLinks = [...links].map((link) => {
       if (link.id === id) {
         return { ...link, name: newName };
       } else {
@@ -115,34 +190,11 @@ class App extends Component {
       }
     });
 
-    this.setState({
-      links: localLinks,
-    });
+    setLinks(localLinks);
   };
 
-  changeListing = (category, field, newName, id) => {
-    if (
-      !(category in this.state) ||
-      !(field in this.state[category][0])
-    )
-      throw new Error("No such state to modify");
-    // if (!(field in this.state[category]))
-    //   throw new Error("No such state to modify");
-
-    const listings = [...this.state[category]].map((listing) => {
-      if (listing.id === id) {
-        return { ...listing, [field]: newName };
-      } else {
-        return listing;
-      }
-    });
-
-    this.setState({
-      [category]: listings,
-    });
-  };
-  changeLinkUrl = (url, id) => {
-    const localLinks = [...this.state.links].map((link) => {
+  const changeLinkUrl = (url, id) => {
+    const localLinks = [...links].map((link) => {
       if (link.id === id) {
         return { ...link, link: url };
       } else {
@@ -150,109 +202,92 @@ class App extends Component {
       }
     });
 
-    this.setState({
-      links: localLinks,
-    });
+    setLinks(localLinks);
   };
 
-  changeState = (name, newState) => {
-    if (name === "links") throw new Error("Cant modify links");
-    if (!(name in this.state))
-      throw new Error("No such state to modify");
-    this.setState({
-      [name]: newState,
-    });
-  };
-
-  deleteListing = (id, category) => {
-    console.log(`Delete ${id} from ${category}`);
-    if (!(category in this.state))
-      throw new Error("No such state to modify");
-
-    const listings = this.state[category].filter((item) => {
-      if (item.id === id) return false;
-      else return true;
-    });
-    console.log(listings);
-
-    this.setState({
-      [category]: listings,
-    });
-  };
-
-  deleteLink = (id) => {
-    const links = this.state.links.filter((link) => {
+  const deleteLink = (id) => {
+    const localLinks = links.filter((link) => {
       if (link.id === id) return false;
       else return true;
     });
 
-    this.setState({
-      links: links,
+    setLinks(localLinks);
+  };
+
+  const changeState = (name, newState) => {
+    dispatchPersonInfo({ payload: { name, value: newState } });
+  };
+
+  const changeListing = (category, field, newName, id) => {
+    dispatchListing({
+      type: ACTIONS.changeListing,
+      payload: {
+        category,
+        field,
+        newName,
+        id,
+      },
     });
   };
 
-  addNewListing = (category) => {
-    console.log("called");
-    if (!(category in this.state))
-      throw new Error("No such state to modify");
-
-    const listings = [...this.state[category]];
-
-    listings.push({
-      listingTitle: "",
-      location: "",
-      date: "",
-      descriptionName: "",
-      description: "",
-      id: uniqid(),
-    });
-
-    this.setState({
-      [category]: listings,
+  const deleteListing = (id, category) => {
+    dispatchListing({
+      type: ACTIONS.deleteListing,
+      payload: {
+        category,
+        id,
+      },
     });
   };
 
-  render() {
-    return (
-      <div className="App">
-        <EditCv
-          aboutMe={this.state.aboutMe}
-          links={this.state.links}
-          firstName={this.state.firstName}
-          lastName={this.state.lastName}
-          occupation={this.state.occupation}
-          address={this.state.address}
-          phoneNumber={this.state.phoneNumber}
-          email={this.state.email}
-          website={this.state.website}
-          changeAboutMe={this.changeAboutMe}
-          editLinkName={this.changeLinkName}
-          addNewLink={this.addLink}
-          editLinkUrl={this.changeLinkUrl}
-          changeMainState={this.changeState}
-          workEx={this.state.workEx}
-          education={this.state.education}
-          changeListing={this.changeListing}
-          addNewListing={this.addNewListing}
-          deleteListing={this.deleteListing}
-          deleteLink={this.deleteLink}
-        />
-        <RenderedCV
-          aboutMe={this.state.aboutMe}
-          links={this.state.links}
-          firstName={this.state.firstName}
-          lastName={this.state.lastName}
-          occupation={this.state.occupation}
-          address={this.state.address}
-          phoneNumber={this.state.phoneNumber}
-          email={this.state.email}
-          website={this.state.website}
-          workEx={this.state.workEx}
-          education={this.state.education}
-        />
-      </div>
-    );
-  }
+  const addNewListing = (category) => {
+    dispatchListing({
+      type: ACTIONS.addListing,
+      payload: {
+        category,
+      },
+    });
+  };
+
+  return (
+    <div className="App">
+      <EditCv
+        aboutMe={personInfo.aboutMe}
+        links={links}
+        firstName={personInfo.firstName}
+        lastName={personInfo.lastName}
+        occupation={personInfo.occupation}
+        address={personInfo.address}
+        phoneNumber={personInfo.phoneNumber}
+        email={personInfo.email}
+        website={personInfo.website}
+        changeAboutMe={changeAboutMe}
+        editLinkName={changeLinkName}
+        addNewLink={addLink}
+        editLinkUrl={changeLinkUrl}
+        changeMainState={changeState}
+        workEx={listings.workEx}
+        education={listings.education}
+        changeListing={changeListing}
+        addNewListing={addNewListing}
+        deleteListing={deleteListing}
+        deleteLink={deleteLink}
+      />
+      <RenderedCV
+        aboutMe={personInfo.aboutMe}
+        links={links}
+        firstName={personInfo.firstName}
+        lastName={personInfo.lastName}
+        occupation={personInfo.occupation}
+        address={personInfo.address}
+        phoneNumber={personInfo.phoneNumber}
+        email={personInfo.email}
+        website={personInfo.website}
+        workEx={listings.workEx}
+        education={listings.education}
+      />
+    </div>
+  );
 }
 
 export default App;
